@@ -27,6 +27,7 @@
     <div id="fade-test" class="container">
         <div class="row">
             <div class="cols 12">
+
                 <div class="input-field">
                     <input placeholder="Enter your Zip Code" id="zip_code" type="text" class="validate">
                     <label for="zip_code">Zipcode</label>
@@ -37,8 +38,20 @@
 
         <div class="row">
             <div class="col s6">
+                <div class="row">
+                    <div class="col s12 geo-dump">
 
+                    </div>
 
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <button id="submit-geo" class="btn waves-effect waves-light" type="submit" name="action">Get Geo-code
+                            <i class="material-icons right">send</i>
+                        </button>
+
+                    </div>
+                </div>
             </div>
             <div class="col s6">
                 <div id="map">
@@ -51,8 +64,38 @@
 
     <script>
         var map;
+
         //holds the name of our icons
         var imgArray = ['esp', 'gas', 'hax', 'hun', 'lux', 'mes', 'regi', 'sep', 'shu', 'sui', 'ven', 'war'];
+
+        var apiKey = "";
+        var zip = $("#zip_code").val().trim();
+
+
+
+        var queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=${apiKey}`;
+        $('#submit-geo').on('click', function () {
+
+
+            $.ajax({
+                url: queryUrl,
+                method: 'GET'
+            }).then(function (response) {
+                console.log(response);
+                var source = response.results;
+                for (var i = 0; i < source.length; i++) {
+                    var coords = { lat: source[i].geometry.location.lat, lng: source[i].geometry.location.lng };
+                    console.log(coords);
+
+                }
+
+            });
+
+        });
+
+
+
+
 
         //inits map and it icons (these can be seperated)
         function initMap() {
@@ -62,6 +105,8 @@
                 zoom: 8
             });
 
+            addMarker(33.9519, -83.3576);
+            addMarker(33.9519, -83.3576);
             addMarker(33.9519, -83.3576);
             addMarker(33.9519, -83.3576);
             addMarker(33.9519, -83.3576);
@@ -120,8 +165,11 @@
             //});
 
         }
+
+
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=[api-key]&callback=initMap" async
+    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async
         defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="assets/js/app.js"></script>
