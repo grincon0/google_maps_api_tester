@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
 
 </head>
@@ -24,9 +25,19 @@
         </div>
     </nav>
     <div class="container">
+        <div class="row">
+            <div class="cols 12">
+                <div class="input-field">
+                    <input placeholder="Enter your Zip Code" id="zip_code" type="text" class="validate">
+                    <label for="zip_code">Zipcode</label>
+                </div>
+            </div>
+
+        </div>
 
         <div class="row">
             <div class="col s6">
+
 
             </div>
             <div class="col s6">
@@ -40,36 +51,77 @@
 
     <script>
         var map;
-        
+        //holds the name of our icons
+        var imgArray = ['esp', 'gas', 'hax', 'hun', 'lux', 'mes', 'regi', 'sep', 'shu', 'sui', 'ven', 'war'];
+
+        //inits map and it icons (these can be seperated)
         function initMap() {
             // create our Google map
-             var map = new google.maps.Map(document.getElementById('map'), {
+            var map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 33.9519, lng: -83.3576 },
                 zoom: 8
             });
+
+            addMarker(33.9519, -83.3576);
+            addMarker(33.9519, -83.3576);
+            addMarker(33.9519, -83.3576);
+            addMarker(33.9519, -83.3576);
+
+            //renders marker to map, along with a infor window that appears on click
+            function addMarker(lat, lng) {
+                var img = imgArray[(Math.floor(Math.random() * imgArray.length))];
+
+                var latSpread = (Math.random() * 0.6) + lat;
+                var lngSpread = (Math.random() * 0.6) + lng;
+                // create a marke object on the map
+                var marker = new google.maps.Marker({
+                    position: { lat: latSpread, lng: lngSpread },
+                    map: map,
+                    icon: {
+                        url: `assets/images/markers/${img}.png`,
+                        size: new google.maps.Size(34, 34),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(25.5, 29)
+                    }
+
+
+                });
+                //creates a info window that is attachable to a marker
+                var infoWindow = new google.maps.InfoWindow({
+                    content: '<p>A wild Pokemon has been spotted!</p>'
+                });
+                //render the infoWindow object when licking marker
+                marker.addListener('click', function () {
+                    infoWindow.open(map, marker);
+                });
+            }
+
             // places marker on 'positon'
-            var marker = new google.maps.Marker({
-                position: {lat: 33.9519, lng: -83.3576},
-                map : map,
-                icon: {
-                    url: 'assets/images/markers/ven.png',
-                    size: new google.maps.Size(34, 34),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(25.5, 29)
-                }
-                
-            });
-            //crate infoWindows
-            var infoWindow = new google.maps.InfoWindow({
-                content: '<p>A wild Venusaur has been spotted!</p>'
-            });
+            //var marker = new google.maps.Marker({
+            //position: { lat: 33.9519, lng: -83.3576 },
+            //map: map,
+            // icon: {
+            //url: 'assets/images/markers/ven.png',
+            // size: new google.maps.Size(34, 34),
+            // origin: new google.maps.Point(0, 0),
+            // anchor: new google.maps.Point(25.5, 29)
+            //}
+
+            //});
+            //create infoWindows
+
+
+            //var infoWindow = new google.maps.InfoWindow({
+            //content: '<p>A wild Venusaur has been spotted!</p>'
+            //});
             //when previous marker is clicked, opens infor window previously made
-            marker.addListener('click', function (){
-                infoWindow.open(map, marker);
-            });
+            //marker.addListener('click', function () {
+            //  infoWindow.open(map, marker);
+            //});
+
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=[insert api key]&callback=initMap" async
+    <script src="https://maps.googleapis.com/maps/api/js?key=[apiKEY]&callback=initMap" async
         defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="assets/js/app.js"></script>
