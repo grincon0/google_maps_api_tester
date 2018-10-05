@@ -16,7 +16,7 @@
 <body class="pink lighten-3">
     <nav>
         <div class="nav-wrapper pink darken-1">
-            <a href="#" class="brand-logo">Pet Perfect</a>
+            <a href="#" class="brand-logo">Testing Environment</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="sass.html">Sass</a></li>
                 <li><a href="badges.html">Components</a></li>
@@ -44,7 +44,6 @@
             </div>
 
         </div>
-
         <div class="row">
             <div class="col s6">
                 <div class="row">
@@ -68,131 +67,18 @@
                 </div>
             </div>
         </div>
+        <div id="vet">
+            <div id="location-dump">
+
+            </div>
+
+        </div>
 
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=my_API_Key&libraries=places"></script>
 
-    <script>
-        var map;
-        
-        var address = [];
-        // pushes user address inputs int the address array
-        function getAddress(){
-            var street = $("#house").val().trim();
-            var city = $("#city").val().trim();
-            var state = $("#state").val().trim();
-
-            address.push(street, city, state);
-        }
-
-        //holds the name of our icons
-        var imgArray = ['esp', 'gas', 'hax', 'hun', 'lux', 'mes', 'regi', 'sep', 'shu', 'sui', 'ven', 'war'];
-
-        var apiKey = "";
-       // var zip = $("#zip_code").val().trim();
-    
-      
-
-       console.log(address)
-
-        
-        $('#submit-geo').on('click', function () {
-            //pushes form values into the address array
-            getAddress();
-            //creates a string with the address array, giving us a string with the user's address
-            var useAddress = address.join();
-            console.log(useAddress)
-            //passes the user address as a single string to the address parameter
-            var queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${useAddress}&key=${apiKey}`;
-            var coords;
-            $.ajax({
-                url: queryUrl,
-                method: 'GET'
-            }).then(function (response) {
-                console.log(response);
-                var source = response.results;
-                for (var i = 0; i < source.length; i++) {
-                    coords = { lat: source[i].geometry.location.lat, lng: source[i].geometry.location.lng };
-                    console.log(coords);
-                }
-                initMap(coords);
-            });
-        });
-        //inits map and it icons (these can be seperated)
-        function initMap(coords) {
-            // create our Google map
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: coords,
-                zoom: 8
-            });
-
-            addMarker(coords);
-            addMarker(coords);
-            addMarker(coords);
-            addMarker(coords);
-            addMarker(coords);
-            addMarker(coords);
-            //renders marker to map, along with a infor window that appears on click
-            function addMarker(coords) {
-                var img = imgArray[(Math.floor(Math.random() * imgArray.length))];
-                var corNumArray = [];
-                for (prop in coords) {
-                    corNumArray.push(coords[prop]);
-                }
-
-                var latSpread = (Math.random() * 0.6) + corNumArray[0];
-                var lngSpread = (Math.random() * 0.6) + corNumArray[1];
-                // create a marker object on the map
-                var marker = new google.maps.Marker({
-                    position: { lat: latSpread, lng: lngSpread },
-                    map: map,
-                    icon: {
-                        url: `assets/images/markers/${img}.png`,
-                        size: new google.maps.Size(34, 34),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(25.5, 29)
-                    }
-                });
-                //creates a info window that is attachable to a marker
-                var infoWindow = new google.maps.InfoWindow({
-                    content: '<p>A wild Pokemon has been spotted!</p>'
-                });
-                //render the infoWindow object when licking marker
-                marker.addListener('click', function () {
-                    infoWindow.open(map, marker);
-                });
-            }
-
-            // places marker on 'positon'
-            //var marker = new google.maps.Marker({
-            //position: { lat: 33.9519, lng: -83.3576 },
-            //map: map,
-            // icon: {
-            //url: 'assets/images/markers/ven.png',
-            // size: new google.maps.Size(34, 34),
-            // origin: new google.maps.Point(0, 0),
-            // anchor: new google.maps.Point(25.5, 29)
-            //}
-
-            //});
-            //create infoWindows
-
-
-            //var infoWindow = new google.maps.InfoWindow({
-            //content: '<p>A wild Venusaur has been spotted!</p>'
-            //});
-            //when previous marker is clicked, opens infor window previously made
-            //marker.addListener('click', function () {
-            //  infoWindow.open(map, marker);
-            //});
-
-        }
-
-
-
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key="></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/slim.js"></script>
 </body>
 
 </html>
