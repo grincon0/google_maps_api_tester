@@ -28,19 +28,45 @@
         <div class="row">
             <div class="cols 12">
                 <form>
-                <div class="input-field">
-                    <input placeholder="Enter your street address" id="house" type="text" class="validate">
-                    <label for="house">Street Address</label>
-                </div>
-                <div class="input-field">
-                    <input placeholder="Enter your Zip Code" id="city" type="text" class="validate">
-                    <label for="city">City</label>
-                </div>
-                <div class="input-field">
-                    <input placeholder="Enter your Zip Code" id="state" type="text" class="validate">
-                    <label for="state">State</label>
-                </div>
-            </form>
+                    <div class="input-field">
+                        <input placeholder="Enter your street address" id="house" type="text" class="validate">
+                        <label for="house">Street Address</label>
+                    </div>
+                    <div class="input-field">
+                        <input placeholder="Enter your Zip Code" id="city" type="text" class="validate">
+                        <label for="city">City</label>
+                    </div>
+                    <div class="input-field">
+                        <input placeholder="Enter your Zip Code" id="state" type="text" class="validate">
+                        <label for="state">State</label>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col s6 float">
+                <h6>What do you need to search for?</h6>
+                
+                <p>
+                    <label>
+                        <input id="check-park" data-text="dogpark" type="checkbox" class="filled-in" />
+                        <span class="select-text">Dog-frendly parks</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input id="check-vet" data-text="veterinary" type="checkbox" class="filled-in" />
+                        <span class="select-text">Vetenaries</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input id="check-store" data-text="pet+store" type="checkbox" class="filled-in" />
+                        <span class="select-text">Pet Stores</span>
+                    </label>
+                </p>
+            
             </div>
 
         </div>
@@ -68,14 +94,18 @@
             </div>
         </div>
         <div id="vet">
-            <div id="location-dump">
+            <div class ="border">
+                <h5>Our Recommendations</h5>
+                <div id ="location-dump">
+
+                </div>
 
             </div>
 
         </div>
 
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=my_API_Key&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="assets/js/slim.js"></script>
