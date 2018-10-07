@@ -1,6 +1,5 @@
-
 const address = [];
-const apiKey = "";
+const apiKey = "AIzaSyDEewIlfcIcurMzXVtLW1QTqvCp19nhuLA";
 const placeIDs = [];
 
 const placeTypes = ['veterinary_care', 'pet_store'];
@@ -36,6 +35,7 @@ let isFormComplete = false;
 $(document).ready(function () {
     $(".filled-in").on("click", function () {
         $(this).attr("isSelected", "true");
+        $("#location-dump").empty();
         toSearchFor = "";
         toSearchFor = $(this).attr("data-text");
 
@@ -44,14 +44,13 @@ $(document).ready(function () {
 
         if (!btnDisabled) {
             disableBoxes(this);
-            console.log(btnDisabled);
+            
         } else if (btnDisabled) {
             releaseBoxes(this);
-            console.log(btnDisabled);
+            
         }
 
-        console.log(toSearchFor);
-        console.log('is form complete', isFormComplete);
+
     });
 });
 
@@ -83,25 +82,25 @@ const disableBoxes = (caller) => {
 const releaseBoxes = (caller) => {
     let selectAttr = $(caller).attr("isSelected");
     let storedTxt = $(caller).attr("data-text");
-    console.log('release');
+
     switch (storedTxt) {
         case "dogpark":
             $("#check-vet").removeAttr("disabled");
             $("#check-store").removeAttr("disabled");
             btnDisabled = false;
-            console.log('works');
+
             break;
         case "veterinary":
             $("#check-store").removeAttr("disabled");
             $("#check-park").removeAttr("disabled");
             btnDisabled = false;
-            console.log('works');
+
             break;
         case "pet+store":
             $("#check-park").removeAttr("disabled");
             $("#check-vet").removeAttr("disabled");
             btnDisabled = false;
-            console.log('works');
+
             break;
         default:
             return;
@@ -134,14 +133,14 @@ $('#submit-geo').on('click', function () {
             url: queryUrl,
             method: 'GET'
         }).then(function (response) {
-            console.log(response);
+   
 
-            var source = response.results;
+            let source = response.results;
 
-            for (var i = 0; i < source.length; i++) {
+            for (let i = 0; i < source.length; i++) {
                 //creates a variable that will hold the users lat and lng coordinates
                 coords = { lat: source[i].geometry.location.lat, lng: source[i].geometry.location.lng };
-                console.log(coords);
+ 
             }
             //initialize map with user's coordinates
             initMap(coords);
@@ -183,9 +182,9 @@ const getPetPlaces = (coords) => {
             "x-requested-with": "xhr"
         }
     }).then(function (response) {
-        console.log("places", response);
+  
         let source = response.results;
-        for (var i = 0; i < source.length; i++) {
+        for (let i = 0; i < source.length; i++) {
             //create obj that holds an id of the place received by the api
             let place = {
                 id: source[i].place_id
@@ -205,7 +204,7 @@ const renderMarks = (map, idArr) => {
     let infowindow = new google.maps.InfoWindow();
     // initialize google place details service
     let service = new google.maps.places.PlacesService(map);
-    for (var i = 0; i < idArr.length; i++) {
+    for (let i = 0; i < idArr.length; i++) {
 
         service.getDetails({
             //passes ids for each of the places in the array
@@ -213,13 +212,8 @@ const renderMarks = (map, idArr) => {
         }, function (place, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 //create for a place
-                var marker = new google.maps.Marker({
-                    icon: {
-                        url: getRndIcon(),
-                        size: new google.maps.Size(34, 34),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(25.5, 29)
-                    },
+                let marker = new google.maps.Marker({
+
                     map: map,
                     animation: google.maps.Animation.DROP,
                     position: place.geometry.location
@@ -267,9 +261,6 @@ const renderMarks = (map, idArr) => {
         });
     }
 }
-
-
-
 
 
 const getIcon = () => {
