@@ -1,5 +1,5 @@
 const address = [];
-const apiKey = "AIzaSyDEewIlfcIcurMzXVtLW1QTqvCp19nhuLA";
+const apiKey = "apikey";
 const placeIDs = [];
 
 const placeTypes = ['veterinary_care', 'pet_store'];
