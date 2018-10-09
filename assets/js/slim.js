@@ -1,22 +1,8 @@
 const address = [];
-const apiKey = "apikey";
+const apiKey = "";
 const placeIDs = [];
 
 const placeTypes = ['veterinary_care', 'pet_store'];
-
-const iconTypes = [{
-    url: `assets/images/markers/gas.png`,
-    size: new google.maps.Size(34, 34),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(25.5, 29)
-}, {
-    url: `assets/images/markers/esp.png`,
-    size: new google.maps.Size(34, 34),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(25.5, 29)
-}];
-
-const imgArray = ['esp', 'gas', 'hax', 'hun', 'lux', 'mes', 'regi', 'sep', 'shu', 'sui', 'ven', 'war'];
 
 let map;
 let parkIDs = [];
@@ -29,6 +15,8 @@ let toSearchFor = "";
 
 //checks to see if user completed form
 let isFormComplete = false;
+
+let placesToDump = [];
 
 
 
@@ -44,10 +32,10 @@ $(document).ready(function () {
 
         if (!btnDisabled) {
             disableBoxes(this);
-            
+
         } else if (btnDisabled) {
             releaseBoxes(this);
-            
+
         }
 
 
@@ -58,7 +46,6 @@ $(document).ready(function () {
 const disableBoxes = (caller) => {
     let chosenBox = caller;
     let storedTxt = $(chosenBox).attr("data-text");
-    let selectAttr = $(chosenBox).attr("isSelected");
     btnDisabled = true;
     switch (storedTxt) {
         case "dogpark":
@@ -80,7 +67,6 @@ const disableBoxes = (caller) => {
 
 //if the user deselects their box, the other boxes will be clickable
 const releaseBoxes = (caller) => {
-    let selectAttr = $(caller).attr("isSelected");
     let storedTxt = $(caller).attr("data-text");
 
     switch (storedTxt) {
@@ -108,7 +94,6 @@ const releaseBoxes = (caller) => {
 
 }
 
-
 //gets the address the user inputs
 const getAddress = () => {
     let street = $("#house").val().trim();
@@ -133,14 +118,14 @@ $('#submit-geo').on('click', function () {
             url: queryUrl,
             method: 'GET'
         }).then(function (response) {
-   
+
 
             let source = response.results;
 
             for (let i = 0; i < source.length; i++) {
                 //creates a variable that will hold the users lat and lng coordinates
                 coords = { lat: source[i].geometry.location.lat, lng: source[i].geometry.location.lng };
- 
+
             }
             //initialize map with user's coordinates
             initMap(coords);
@@ -182,7 +167,7 @@ const getPetPlaces = (coords) => {
             "x-requested-with": "xhr"
         }
     }).then(function (response) {
-  
+
         let source = response.results;
         for (let i = 0; i < source.length; i++) {
             //create obj that holds an id of the place received by the api
@@ -198,7 +183,6 @@ const getPetPlaces = (coords) => {
     });
 }
 
-
 const renderMarks = (map, idArr) => {
     //initialize info window
     let infowindow = new google.maps.InfoWindow();
@@ -213,7 +197,12 @@ const renderMarks = (map, idArr) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 //create for a place
                 let marker = new google.maps.Marker({
-
+                    icon: {
+                        url: `assets/images/markers/mark3.png`,
+                        size: new google.maps.Size(22, 43),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(25.5, 29)
+                    },
                     map: map,
                     animation: google.maps.Animation.DROP,
                     position: place.geometry.location
@@ -222,8 +211,8 @@ const renderMarks = (map, idArr) => {
                 //if click on the marker, an info window will render above it showing specific detais about the place
                 google.maps.event.addListener(marker, 'click', function () {
                     infowindow.setContent('<div id="fade-test"><strong>' + place.name + '</strong><br>' +
-                        'Rating: ' + place.rating + '<br>' + place.formatted_phone_number + '<br>' +
-                        place.formatted_address + '</div>');
+                        'Rating: ' + place.rating + '<br>' + checkPhone() + '<br>' +
+                        getTravelUrl(address, place.formatted_address) + '</div>');
                     infowindow.open(map, this);
                 });
                 function toggleBounce() {
@@ -248,43 +237,60 @@ const renderMarks = (map, idArr) => {
 
                 }
                 //if the place rating is greater than or equal to 4.6, render the follwoing conent to the 'recommendations' div
+
+
                 if (place.rating >= 4.6) {
 
                     let text = $('<div id="fade-test"><strong>' + place.name + '</strong><br>' +
                         'Rating: ' + place.rating + checkPhone() +
-                        place.formatted_address + '</div>');
+                        '</div>' + getTravelUrl(address, place.formatted_address));
 
                     $("#location-dump").append(text);
+
+                }
+
+                if (place.rating >= 4.6) {
+                    let gPlace = {
+                        name: place.name,
+                        rating: place.rating,
+                        phone: checkPhone(),
+                        address: place.formatted_address
+                    }
+
+                    placesToDump.push(gPlace);
+
 
                 }
             }
         });
     }
+    sortArr(placesToDump);
+    console.log(placesToDump);
+
 }
 
+const sortArr = (arr) => {
+    console.log("sort initialize");
+    for (let i = 0; i < arr.length; i++) {
+        for (let z = 0; z < arr.length - i - 1; z++) {
+            if (arr[z].rating < arr[(z + 1)].rating) {
+                let lower = arr[z];
+                let higher = arr[(z + 1)];
+                console.log('lower', lower);
+                console.log('higher', higher);
 
-const getIcon = () => {
-    let markIcon;
-    if (!isPlaceVet) {
-
-        markIcon = iconTypes[1];
-        return markIcon;
-    } else {
-        markIcon = iconTypes[0];
-        return markIcon;
+                arr[z] = higher;
+                arr[(z + 1)] = lower;
+            } else {
+                console.log("this algo is porbs not working correctly");
+            }
+        }
     }
 
+    console.log(arr);
 }
 
-const getRndIcon = () => {
-    let markIcon;
-    let rnd = Math.floor(Math.random() * imgArray.length);
-    markIcon = imgArray[rnd];
-
-    let iconUrl = `assets/images/markers/${markIcon}.png`
-
-    return iconUrl;
-
-
+const getTravelUrl = (origin, destination) => {
+    return `<a href="https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving" target="_blank">${destination}</a>`;
 }
 
