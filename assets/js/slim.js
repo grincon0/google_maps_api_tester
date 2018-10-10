@@ -1,9 +1,6 @@
 const address = [];
 const apiKey = "";
 const placeIDs = [];
-
-const placeTypes = ['veterinary_care', 'pet_store'];
-
 let map;
 let parkIDs = [];
 
@@ -211,7 +208,7 @@ const renderMarks = (map, idArr) => {
                 //if click on the marker, an info window will render above it showing specific detais about the place
                 google.maps.event.addListener(marker, 'click', function () {
                     infowindow.setContent('<div id="fade-test"><strong>' + place.name + '</strong><br>' +
-                        'Rating: ' + place.rating + '<br>' + checkPhone() + '<br>' +
+                        'Rating: ' + place.rating  + checkPhone() + 
                         getTravelUrl(address, place.formatted_address) + '</div>');
                     infowindow.open(map, this);
                 });
@@ -272,7 +269,7 @@ const renderMarks = (map, idArr) => {
 const sortArr = (arr) => {
     console.log("sort initialize");
     for (let i = 0; i < arr.length; i++) {
-        for (let z = 0; z < arr.length - i - 1; z++) {
+        for (let z = 0; z < arr.length; z++) {
             if (arr[z].rating < arr[(z + 1)].rating) {
                 let lower = arr[z];
                 let higher = arr[(z + 1)];
